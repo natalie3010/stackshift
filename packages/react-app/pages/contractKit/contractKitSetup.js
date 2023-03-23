@@ -1,8 +1,12 @@
+// #######################################################
+// ####################  Setup  ##########################
+// #######################################################
 
+// Imports & setup for web3 and ContractKit
 
-export default function Home() {
+export default function ContractKitSetup() {
 
-  const Web3 = require("web3");
+const Web3 = require("web3");
 const ContractKit = require("@celo/contractkit");
 const web3 = new Web3(`https://alfajores-forno.celo-testnet.org`);
 const kit = ContractKit.newKitFromWeb3(web3);
@@ -12,13 +16,11 @@ const kit = ContractKit.newKitFromWeb3(web3);
 // Update private key to the account you would like to use (do not share with others)
 const PRIVATE_KEY =
 "0xbf16dfbc0e7505986ae63e19a27bd631bccc4a1d5ea14fa70420a94e66aa192c";
-const GUEST_PRIVATE_KEY = "0xc010dfbc3acd55b8e25113773b363c7abe8642a58d4e4c8b3a4d586b3eab8ce8";
 const account = web3.eth.accounts.privateKeyToAccount(PRIVATE_KEY);
-const accountGuest = web3.eth.accounts.privateKeyToAccount(GUEST_PRIVATE_KEY);
 // Update address to the address of the account you want to interact with
-let address = '0xf601795eb62962841348521713ED5cc4E3EF8ddd';
+let address = "0x6DC0Fd712832fAA597f3fC6a04854A8e7BAFB8B6";
 // Set amount for transfer related functions
-let value = ".0001";
+let value = ".01";
 
 //  Connect to the network
 
@@ -35,15 +37,13 @@ kit.defaultAccount = account.address;
  * @return The name of the CELO token.
  */
 
-
-
 async function name() {
   let contract = await kit.contracts.getGoldToken();
-  let tryname = await contract.name();
-  console.log(`${tryname}`);
+  let name = await contract.name();
+  console.log(`${name}`);
 }
 
-let testMe = name();
+// name();
 
 // #######################################################
 // ################ Account Functions ####################
@@ -62,37 +62,8 @@ async function balanceOf() {
   let balanceOf = await contract.balanceOf(account.address);
   console.log(`${balanceOf}`);
 }
-// ********************************************************************************** //
+
 // balanceOf();
-
-  // /**
-  //  * @notice Transfers CELO from one address to another on behalf of a user.
-  //  * @param from The address to transfer CELO from.
-  //  * @param to The address to transfer CELO to.
-  //  * @param value The amount of CELO to transfer.
-  //  * @return True if the transaction succeeds.
-  //  */
-
-  // async function transferFrom() {
-  //   let amount = kit.web3.utils.toWei(value, "ether");
-  //   let contract = await kit.contracts.getGoldToken();
-  //   let transaction = await contract.
-  //   transferFrom(account.address, accountGuest.address, amount)
-  //   .send({ from: account.address })
-  //   ;
-  //   console.log(`${balanceOf}`);
-
-  //   let balance = await contract.balanceOf(account.address);
-  //   let balance2 = await contract.balanceOf(accountGuest.address);
-  
-  //   console.log(
-  //     //`Transaction: https://alfajores-blockscout.celo-testnet.org/tx/${receipt.transactionHash}/`,
-  //   "\n",
-  //     `Balance: ${kit.web3.utils.fromWei(balance.toString(), "ether")}`,
-  //     `Balance2: ${kit.web3.utils.fromWei(balance2.toString(), "ether")}`)
-  // }
-
-  // ******************************************************************************************** //
 
 // **----------------- ✅ Transfer -------------------** //
 
@@ -103,14 +74,12 @@ async function balanceOf() {
  * @return True if the transaction succeeds.
  */
 
-
 async function transfer() {
   let amount = kit.web3.utils.toWei(value, "ether");
   let contract = await kit.contracts.getGoldToken();
   let transaction = await contract
     .transfer(address, amount)
-    .send({ from: account.address })
-    ;
+    .send({ from: account.address });
   let receipt = await transaction.waitReceipt();
   let balance = await contract.balanceOf(account.address);
 
@@ -121,28 +90,34 @@ async function transfer() {
   );
 }
 
-  
-  
-  return (
-    <div>
+// transfer();
 
-      <div className="h1">There you go... a canvas for your next Celo project!</div>
+// **----------- ✅ Transfer with Comment ------------** //
 
-    
-      <div> 
-        <p> enter bill amount </p>
-        <input/>
-      </div>
+/**
+ * @notice Transfers CELO from one address to another with a comment.
+ * @param to The address to transfer CELO to.
+ * @param value The amount of CELO to transfer.
+ * @param comment The transfer comment
+ * @return True if the transaction succeeds.
+ */
 
-      <div> 
-        <p> How would you like to split the bill? </p>
-        <button 
-          type="button">Equally </button>
-        <button>60:40 </button>
-        <button>70:30 </button>
-        <button onClick={transfer}>test me</button>
-      </div>
-      
-    </div>
-  )
+// async function transferWithComment() {
+//   let amount = kit.web3.utils.toWei(value, "ether");
+//   let contract = await kit.contracts.getGoldToken();
+//   let transaction = await contract
+//     .transferWithComment(address, amount, comment)
+//     .send({ from: account.address });
+//   let receipt = await transaction.waitReceipt();
+//   let balance = await contract.balanceOf(account.address);
+
+//   console.log(
+//     `Transaction: https://alfajores-blockscout.celo-testnet.org/tx/${receipt.transactionHash}/`,
+//     "\n",
+//     `Balance: ${kit.web3.utils.fromWei(balance.toString(), "ether")}`
+//   );
+// }
+
+// transferWithComment();
+
 }
