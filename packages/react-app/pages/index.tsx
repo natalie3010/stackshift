@@ -1,4 +1,4 @@
-
+import React from "react";
 
 export default function Home() {
 
@@ -135,10 +135,17 @@ async function transfer() {
       </div>
 
       <div> 
+
         <p> How would you like to split the bill? </p>
-        <button 
-          type="button">Equally </button>
-        <button>60:40 </button>
+        <div>
+          <button type="button">Equally </button>
+        </div>
+
+        <div>
+          <button>60:40 </button>
+        </div>
+        
+        
         <button>70:30 </button>
         <button onClick={transfer}>test me</button>
       </div>
